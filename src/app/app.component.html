@@ -1,7 +1,24 @@
-<h1>{{ title }}</h1> <!--para exibir valor de variavel usar chaves duplas-->
+<h1 class="title">{{ title }}</h1> <!--para exibir valor de variavel usar chaves duplas-->
 <ul>
   <li *ngFor="let todo of todos"><!-- for do angular-->
-    {{todo.id}}. {{todo.title}} |
-    <button>REMOVER</button> | <button>CONCLUIR</button>
+    {{todo.title}} |
+    <button *ngIf="!todo.done" (click)="markAsDone(todo)">CONCLUIR</button> | 
+    <button *ngIf="todo.done" (click)="markAsUndone(todo)">REFAZER</button> |
+    <button (click)="remove(todo)">REMOVER</button>
   </li> 
 </ul>
+
+<form class="search" [formGroup]="form">
+  <fieldset>
+    <label>Tarefa: </label>
+    <input type="text" placeholder="Tútulo da tarefa" maxlength="50" formControlName="title">
+    <small *ngIf="form.controls.title.invalid && !form.controls.title.pristine">Mín:5 Max:50 carac.</small> <!--!form.controls.title.pristine: diz se o controle do formulario ja foi modificado ou nao-->
+    <button class="button" [disabled]="form.invalid" (click)="add()">Salvar</button> <!-- [disable] desativa um botao até que a condição seja atendida-->
+  </fieldset>
+</form>
+
+<!-- tipos de bind
+  () = html > ts
+  [] = ts > html
+  [()] = ts <> html
+-->
